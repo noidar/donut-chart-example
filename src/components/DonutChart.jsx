@@ -7,193 +7,970 @@ const DonutChart = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const colors = Highcharts.getOptions().colors;
-    const categories = ['Aktien', 'ETFs', 'Derivate', 'Cash'];
-    
-    const data = [
+    // Sectors data - first series (hidden inner ring)
+    const sectorsData = [
       {
-        y: 44.02,
-        color: colors[0],
-        drilldown: {
-          name: 'Aktien',
-          categories: [
-            'Booking Holdings',
-            'Givaudan',
-            'Hermes International',
-            'MercadoLibre',
-            'Samsung',
-            'ASML Holding',
-            'Nvidia',
-            'Alphabet',
-            'Tesla',
-            'Microsoft',
-            'Apple',
-            'Amazon',
-            'Other Stocks'
-          ],
-          data: [2.21, 1.68, 1.03, 0.94, 0.80, 0.76, 0.72, 0.68, 0.65, 0.62, 0.58, 0.55, 33.00]
+        name: "Basic Materials",
+        y: 4.731030727468092,
+        color: "pink",
+        dataLabels: {
+          enabled: true
         }
       },
       {
-        y: 3.49,
-        color: colors[1],
-        drilldown: {
-          name: 'ETFs',
-          categories: [
-            'VANECK SPACE UC.ETF',
-            'iShares Nasdaq 100',
-            'iShares Core S&P 500',
-            'VANECKETFSDFNS ADLA',
-            '21SHARES BITCOIN ETP',
-            'iShares MSCI World',
-            'Vanguard S&P 500',
-            'SPDR S&P 500',
-            'iShares Core MSCI EM',
-            'Other ETFs'
-          ],
-          data: [0.86, 0.53, 0.27, 0.25, 0.24, 0.22, 0.21, 0.19, 0.18, 0.54]
+        name: "Communication Services",
+        y: 6.797067498675913,
+        color: "#d62728",
+        dataLabels: {
+          enabled: true
         }
       },
       {
-        y: 41.79,
-        color: colors[2],
-        drilldown: {
-          name: 'Derivate',
-          categories: [
-            'Inline DAX 18800-29800',
-            'Long Mini Future Bitcoin',
-            'Inline DAX 17800-27200',
-            'Long Mini Future Gold',
-            'Call Option Tesla',
-            'Put Option S&P 500',
-            'Turbo Long DAX',
-            'Other Derivatives'
-          ],
-          data: [17.71, 12.70, 2.95, 1.95, 1.85, 1.75, 1.65, 1.23]
+        name: "Consumer Cyclical",
+        y: 8.443886877037615,
+        color: "darkgreen",
+        dataLabels: {
+          enabled: true
         }
       },
       {
-        y: 10.70,
-        color: colors[3],
-        drilldown: {
-          name: 'Cash',
-          categories: ['Cash Position'],
-          data: [10.70]
+        name: "Consumer Defensive",
+        y: 11.83868329086453,
+        color: "#9467bd",
+        dataLabels: {
+          enabled: true
+        }
+      },
+      {
+        name: "Energy",
+        y: 0.8978412546779047,
+        color: "yellow",
+        dataLabels: {
+          enabled: true
+        }
+      },
+      {
+        name: "Financial Services",
+        y: 16.73486888816078,
+        color: "#2ca02c",
+        dataLabels: {
+          enabled: true
+        }
+      },
+      {
+        name: "Healthcare",
+        y: 13.40831891217321,
+        color: "#1f77b4",
+        dataLabels: {
+          enabled: true
+        }
+      },
+      {
+        name: "Industrials",
+        y: 19.51451822833219,
+        color: "purple",
+        dataLabels: {
+          enabled: true
+        }
+      },
+      {
+        name: "Other",
+        y: 0.17065478230211,
+        color: "lightgrey",
+        dataLabels: {
+          enabled: true
+        }
+      },
+      {
+        name: "Real Estate",
+        y: 1.633199154968784,
+        color: "#8c564b",
+        dataLabels: {
+          enabled: true
+        }
+      },
+      {
+        name: "Technology",
+        y: 12.67939120316918,
+        color: "turquoise",
+        dataLabels: {
+          enabled: true
+        }
+      },
+      {
+        name: "Utilities",
+        y: 3.1505391821697,
+        color: "#ff7f0e",
+        dataLabels: {
+          enabled: true
         }
       }
     ];
 
-    const portfolioData = [];
-    const holdingsData = [];
-    const dataLen = data.length;
-
-    let i, j, drillDataLen, brightness;
-
-    // Build the data arrays
-    for (i = 0; i < dataLen; i += 1) {
-      // add portfolio category data
-      portfolioData.push({
-        name: categories[i],
-        y: data[i].y,
-        color: data[i].color
-      });
-
-      // add holdings data
-      drillDataLen = data[i].drilldown.data.length;
-      for (j = 0; j < drillDataLen; j += 1) {
-        const name = data[i].drilldown.categories[j];
-        brightness = 0.2 - (j / drillDataLen) / 5;
-        holdingsData.push({
-          name,
-          y: data[i].drilldown.data[j],
-          color: Highcharts.color(data[i].color).brighten(brightness).get()
-        });
+    // Industries data - second series (visible outer ring)
+    const industriesData = [
+      {
+        name: "Chemicals",
+        y: 0.2056050689930634,
+        color: "pink",
+        sector: "Basic Materials",
+        topAssets: "BASF",
+        sectorWeight: 4.731030727468092
+      },
+      {
+        name: "Chemicals - Specialty",
+        y: 2.389603288750437,
+        color: "pink",
+        sector: "Basic Materials",
+        topAssets: "Symrise, Covestro, Air Liquide",
+        sectorWeight: 4.731030727468092
+      },
+      {
+        name: "Construction Materials",
+        y: 0.75,
+        color: "pink",
+        sector: "Basic Materials",
+        topAssets: "Heidelberg Materials, Buzzi Unicem",
+        sectorWeight: 4.731030727468092
+      },
+      {
+        name: "Copper",
+        y: 0.1122117842657513,
+        color: "pink",
+        sector: "Basic Materials",
+        topAssets: "Aurubis",
+        sectorWeight: 4.731030727468092
+      },
+      {
+        name: "Industrial Materials",
+        y: 1.008595897545376,
+        color: "pink",
+        sector: "Basic Materials",
+        topAssets: "BOLIDEN AB, Rio Tinto",
+        sectorWeight: 4.731030727468092
+      },
+      {
+        name: "Paper, Lumber & Forest Products",
+        y: 0.2643466332679951,
+        color: "pink",
+        sector: "Basic Materials",
+        topAssets: "UPM Kymmene",
+        sectorWeight: 4.731030727468092
+      },
+      {
+        name: "Advertising Agencies",
+        y: 0.04312708726328706,
+        color: "#d62728",
+        sector: "Communication Services",
+        topAssets: "Stroeer",
+        sectorWeight: 6.797067498675913
+      },
+      {
+        name: "Broadcasting",
+        y: 0.1865240767718684,
+        color: "#d62728",
+        sector: "Communication Services",
+        topAssets: "Tegna, E.W. Scripps Company Registered (A)",
+        sectorWeight: 6.797067498675913
+      },
+      {
+        name: "Entertainment",
+        y: 0.775266458852798,
+        color: "#d62728",
+        sector: "Communication Services",
+        topAssets: "Fox, Eventim, Bolloré",
+        sectorWeight: 6.797067498675913
+      },
+      {
+        name: "Internet Content & Information",
+        y: 1.070920256683184,
+        color: "#d62728",
+        sector: "Communication Services",
+        topAssets: "Tencent",
+        sectorWeight: 6.797067498675913
+      },
+      {
+        name: "Publishing",
+        y: 0.1044444569280673,
+        color: "#d62728",
+        sector: "Communication Services",
+        topAssets: "RELX",
+        sectorWeight: 6.797067498675913
+      },
+      {
+        name: "Telecommunications Services",
+        y: 4.616785162176708,
+        color: "#d62728",
+        sector: "Communication Services",
+        topAssets: "Deutsche Telekom, SoftBank, Nippon Telegraph & Telephone",
+        sectorWeight: 6.797067498675913
+      },
+      {
+        name: "Apparel - Footwear & Accessories",
+        y: 1.024333945673757,
+        color: "darkgreen",
+        sector: "Consumer Cyclical",
+        topAssets: "Deckers Outdoor, Adidas, Puma",
+        sectorWeight: 8.443886877037615
+      },
+      {
+        name: "Apparel - Retail",
+        y: 1.043688559653438,
+        color: "darkgreen",
+        sector: "Consumer Cyclical",
+        topAssets: "Urban Outfitters, Inditex, Abercrombie & Fitch Co.",
+        sectorWeight: 8.443886877037615
+      },
+      {
+        name: "Auto - Dealerships",
+        y: 0.2360392535046756,
+        color: "darkgreen",
+        sector: "Consumer Cyclical",
+        topAssets: "Copart",
+        sectorWeight: 8.443886877037615
+      },
+      {
+        name: "Auto - Manufacturers",
+        y: 1.23022606806843,
+        color: "darkgreen",
+        sector: "Consumer Cyclical",
+        topAssets: "BMW (ST), Mercedes-Benz Group, Toyota",
+        sectorWeight: 8.443886877037615
+      },
+      {
+        name: "Auto - Parts",
+        y: 0.187468129402832,
+        color: "darkgreen",
+        sector: "Consumer Cyclical",
+        topAssets: "Knorr-Bremse, Continental, ElringKlinger",
+        sectorWeight: 8.443886877037615
+      },
+      {
+        name: "Gambling, Resorts & Casinos",
+        y: 0.296430991077633,
+        color: "darkgreen",
+        sector: "Consumer Cyclical",
+        topAssets: "Evolution Gaming Group",
+        sectorWeight: 8.443886877037615
+      },
+      {
+        name: "Home Improvement",
+        y: 0.03186753271350202,
+        color: "darkgreen",
+        sector: "Consumer Cyclical",
+        topAssets: "Hornbach Holding",
+        sectorWeight: 8.443886877037615
+      },
+      {
+        name: "Leisure",
+        y: 0.4123284182164633,
+        color: "darkgreen",
+        sector: "Consumer Cyclical",
+        topAssets: "Shimano, ORIENTAL LAND CO.",
+        sectorWeight: 8.443886877037615
+      },
+      {
+        name: "Luxury Goods",
+        y: 0.2501739472053464,
+        color: "darkgreen",
+        sector: "Consumer Cyclical",
+        topAssets: "Hermes International, LVMH",
+        sectorWeight: 8.443886877037615
+      },
+      {
+        name: "Packaging & Containers",
+        y: 0.06198204411877575,
+        color: "darkgreen",
+        sector: "Consumer Cyclical",
+        topAssets: "Huhtamaki",
+        sectorWeight: 8.443886877037615
+      },
+      {
+        name: "Personal Products & Services",
+        y: 0.2481730161411822,
+        color: "darkgreen",
+        sector: "Consumer Cyclical",
+        topAssets: "Rollins, Medifast",
+        sectorWeight: 8.443886877037615
+      },
+      {
+        name: "Residential Construction",
+        y: 1.024642489704364,
+        color: "darkgreen",
+        sector: "Consumer Cyclical",
+        topAssets: "NVR",
+        sectorWeight: 8.443886877037615
+      },
+      {
+        name: "Restaurants",
+        y: 0.510890966740149,
+        color: "darkgreen",
+        sector: "Consumer Cyclical",
+        topAssets: "Cheesecake Factory, Yum Brands",
+        sectorWeight: 8.443886877037615
+      },
+      {
+        name: "Specialty Retail",
+        y: 1.804107603445311,
+        color: "darkgreen",
+        sector: "Consumer Cyclical",
+        topAssets: "O'Reilly Automotive, Casey's General Stores, Canadian Tire Ltd (A)",
+        sectorWeight: 8.443886877037615
+      },
+      {
+        name: "Travel Services",
+        y: 0.082,
+        color: "darkgreen",
+        sector: "Consumer Cyclical",
+        topAssets: "Amadeus IT Group",
+        sectorWeight: 8.443886877037615
+      },
+      {
+        name: "Agricultural Inputs & Services",
+        y: 1.059395397329417,
+        color: "#9467bd",
+        sector: "Consumer Defensive",
+        topAssets: "CF Industries Holdings, Archer-Daniels Midland",
+        sectorWeight: 11.83868329086453
+      },
+      {
+        name: "Beverages - Alcoholic",
+        y: 0.4334002533698772,
+        color: "#9467bd",
+        sector: "Consumer Defensive",
+        topAssets: "Diageo, Brown Forman (B)",
+        sectorWeight: 11.83868329086453
+      },
+      {
+        name: "Beverages - Non Alcoholic",
+        y: 1.598507690030491,
+        color: "#9467bd",
+        sector: "Consumer Defensive",
+        topAssets: "Coca-Cola, Keurig Dr Pepper",
+        sectorWeight: 11.83868329086453
+      },
+      {
+        name: "Confectioners",
+        y: 0.7006969067442582,
+        color: "#9467bd",
+        sector: "Consumer Defensive",
+        topAssets: "Mondelez International",
+        sectorWeight: 11.83868329086453
+      },
+      {
+        name: "Consumer Discounters",
+        y: 0.8039003509455142,
+        color: "#9467bd",
+        sector: "Consumer Defensive",
+        topAssets: "Dollar General, Walmart",
+        sectorWeight: 11.83868329086453
+      },
+      {
+        name: "Discount Stores",
+        y: 0.4344636031738169,
+        color: "#9467bd",
+        sector: "Consumer Defensive",
+        topAssets: "Costco Wholesale",
+        sectorWeight: 11.83868329086453
+      },
+      {
+        name: "Farm Products",
+        y: 0.3522709570064172,
+        color: "#9467bd",
+        sector: "Consumer Defensive",
+        topAssets: "Archer-Daniels Midland, Cargill",
+        sectorWeight: 11.83868329086453
+      },
+      {
+        name: "Food Distribution",
+        y: 0.2473953739853756,
+        color: "#9467bd",
+        sector: "Consumer Defensive",
+        topAssets: "Sysco",
+        sectorWeight: 11.83868329086453
+      },
+      {
+        name: "Food Products",
+        y: 3.043669547470406,
+        color: "#9467bd",
+        sector: "Consumer Defensive",
+        topAssets: "Nestle, General Mills, Kellogg",
+        sectorWeight: 11.83868329086453
+      },
+      {
+        name: "Grocery Stores",
+        y: 0.3493649092395742,
+        color: "#9467bd",
+        sector: "Consumer Defensive",
+        topAssets: "Kroger",
+        sectorWeight: 11.83868329086453
+      },
+      {
+        name: "Home & Personal Products",
+        y: 2.809485423488726,
+        color: "#9467bd",
+        sector: "Consumer Defensive",
+        topAssets: "Procter & Gamble, Unilever, Colgate-Palmolive",
+        sectorWeight: 11.83868329086453
+      },
+      {
+        name: "Oil & Gas Drilling",
+        y: 0.5140411096986264,
+        color: "yellow",
+        sector: "Energy",
+        topAssets: "Suncor Energy, Canadian Natural Resources",
+        sectorWeight: 0.8978412546779047
+      },
+      {
+        name: "Oil & Gas Integrated",
+        y: 0.3837985104031756,
+        color: "yellow",
+        sector: "Energy",
+        topAssets: "Exxon Mobil, Shell",
+        sectorWeight: 0.8978412546779047
+      },
+      {
+        name: "Asset Management",
+        y: 3.430705734793952,
+        color: "#2ca02c",
+        sector: "Financial Services",
+        topAssets: "BlackRock, T. Rowe Price Group, Brookfield",
+        sectorWeight: 16.73486888816078
+      },
+      {
+        name: "Banks - Diversified",
+        y: 0.6651936318844883,
+        color: "#2ca02c",
+        sector: "Financial Services",
+        topAssets: "JPMorgan Chase, Bank of America",
+        sectorWeight: 16.73486888816078
+      },
+      {
+        name: "Banks - Regional",
+        y: 2.373069726779816,
+        color: "#2ca02c",
+        sector: "Financial Services",
+        topAssets: "PNC Financial Services Group, U.S. Bancorp, Bank of Montreal",
+        sectorWeight: 16.73486888816078
+      },
+      {
+        name: "Credit Services",
+        y: 0.8742398421102024,
+        color: "#2ca02c",
+        sector: "Financial Services",
+        topAssets: "Visa, American Express, Mastercard",
+        sectorWeight: 16.73486888816078
+      },
+      {
+        name: "Financial Exchanges",
+        y: 1.243701949152997,
+        color: "#2ca02c",
+        sector: "Financial Services",
+        topAssets: "Intercontinental Exchange, CME Group",
+        sectorWeight: 16.73486888816078
+      },
+      {
+        name: "Financial Services - Diversified",
+        y: 3.962,
+        color: "#2ca02c",
+        sector: "Financial Services",
+        topAssets: "Berkshire Hathaway (B), Charles Schwab",
+        sectorWeight: 16.73486888816078
+      },
+      {
+        name: "Insurance - Diversified",
+        y: 0.966433127653549,
+        color: "#2ca02c",
+        sector: "Financial Services",
+        topAssets: "AXA, Allianz",
+        sectorWeight: 16.73486888816078
+      },
+      {
+        name: "Insurance - Life",
+        y: 1.019267162978031,
+        color: "#2ca02c",
+        sector: "Financial Services",
+        topAssets: "MetLife, Prudential Financial",
+        sectorWeight: 16.73486888816078
+      },
+      {
+        name: "Insurance - Property & Casualty",
+        y: 1.373825655709608,
+        color: "#2ca02c",
+        sector: "Financial Services",
+        topAssets: "Progressive, Travelers Companies, Chubb",
+        sectorWeight: 16.73486888816078
+      },
+      {
+        name: "Insurance - Reinsurance",
+        y: 0.1926953516061844,
+        color: "#2ca02c",
+        sector: "Financial Services",
+        topAssets: "Reinsurance Group of America",
+        sectorWeight: 16.73486888816078
+      },
+      {
+        name: "Insurance - Specialty",
+        y: 0.6952675055325588,
+        color: "#2ca02c",
+        sector: "Financial Services",
+        topAssets: "Aflac, Principal Financial Group",
+        sectorWeight: 16.73486888816078
+      },
+      {
+        name: "Biotechnology",
+        y: 1.531,
+        color: "#1f77b4",
+        sector: "Healthcare",
+        topAssets: "Moderna, Biogen, Gilead Sciences",
+        sectorWeight: 13.40831891217321
+      },
+      {
+        name: "Drug Manufacturers - General",
+        y: 5.850419569893754,
+        color: "#1f77b4",
+        sector: "Healthcare",
+        topAssets: "Johnson & Johnson, Pfizer, AbbVie",
+        sectorWeight: 13.40831891217321
+      },
+      {
+        name: "Drug Manufacturers - Specialty & Generic",
+        y: 1.702,
+        color: "#1f77b4",
+        sector: "Healthcare",
+        topAssets: "Teva Pharmaceutical Industries, Viatris",
+        sectorWeight: 13.40831891217321
+      },
+      {
+        name: "Healthcare Plans",
+        y: 1.458,
+        color: "#1f77b4",
+        sector: "Healthcare",
+        topAssets: "UnitedHealth Group, Anthem",
+        sectorWeight: 13.40831891217321
+      },
+      {
+        name: "Healthcare Providers & Services",
+        y: 1.1567395424089644,
+        color: "#1f77b4",
+        sector: "Healthcare",
+        topAssets: "HCA Healthcare, DaVita HealthCare Partners",
+        sectorWeight: 13.40831891217321
+      },
+      {
+        name: "Medical Care",
+        y: 0.2645829693522455,
+        color: "#1f77b4",
+        sector: "Healthcare",
+        topAssets: "Fresenius Medical Care",
+        sectorWeight: 13.40831891217321
+      },
+      {
+        name: "Medical Devices",
+        y: 1.3760502983752598,
+        color: "#1f77b4",
+        sector: "Healthcare",
+        topAssets: "Abbott Laboratories, Medtronic, Stryker",
+        sectorWeight: 13.40831891217321
+      },
+      {
+        name: "Medical Distribution",
+        y: 0.06509695138894843,
+        color: "#1f77b4",
+        sector: "Healthcare",
+        topAssets: "McKesson",
+        sectorWeight: 13.40831891217321
+      },
+      {
+        name: "Aerospace & Defense",
+        y: 1.794983639647949,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "Boeing, Lockheed Martin, Northrop Grumman",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Airlines",
+        y: 0.9726945459728037,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "United Airlines Holdings, American Airlines Group, Alaska Air Group",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Business Services",
+        y: 0.6425842556999436,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "Waste Management, Republic Services",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Conglomerates",
+        y: 3.233,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "General Electric, 3M, Honeywell International",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Construction & Engineering",
+        y: 0.8473346892001968,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "Caterpillar, Fluor, Jacobs Engineering Group",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Consulting & Outsourcing",
+        y: 0.19444652138952398,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "Accenture",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Electrical Equipment & Parts",
+        y: 1.239,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "Siemens, ABB, Schneider Electric",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Engineering & Construction",
+        y: 0.21096593569024774,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "Vinci",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Farm & Heavy Construction Machinery",
+        y: 1.3582325031693518,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "Deere & Company, CNH Industrial",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Industrial Distribution",
+        y: 0.5739726027397235,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "W.W. Grainger, Fastenal",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Infrastructure Operations",
+        y: 0.6188000721306628,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "Brookfield Infrastructure Partners",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Integrated Freight & Logistics",
+        y: 1.2863893616883983,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "United Parcel Service (B), FedEx",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Marine Shipping",
+        y: 0.02899280575537451,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "A.P. Moller - Maersk (A)",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Metal Fabrication",
+        y: 0.3001844262295046,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "Parker-Hannifin",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Pollution & Treatment Controls",
+        y: 0.065,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "Danaher",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Railroads",
+        y: 1.895138888888889,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "Union Pacific, Canadian National Railway, Norfolk Southern",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Rental & Leasing Services",
+        y: 0.6166666666666667,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "United Rentals, Air Lease",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Staffing & Employment Services",
+        y: 0.038,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "ManpowerGroup",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Tools & Accessories",
+        y: 0.6172602739726027,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "Stanley Black & Decker",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Transportation & Logistics",
+        y: 1.595,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "Canadian Pacific Railway, Old Dominion Freight Line",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Trucking",
+        y: 0.8965517241379309,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "C.H. Robinson Worldwide, J.B. Hunt Transport Services",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Waste Management",
+        y: 0.18846153846153846,
+        color: "purple",
+        sector: "Industrials",
+        topAssets: "Waste Management",
+        sectorWeight: 19.51451822833219
+      },
+      {
+        name: "Closed End Fund - Other",
+        y: 0.17065478230211,
+        color: "lightgrey",
+        sector: "Other",
+        topAssets: "Various",
+        sectorWeight: 0.17065478230211
+      },
+      {
+        name: "Real Estate - Development",
+        y: 0.1627906976744186,
+        color: "#8c564b",
+        sector: "Real Estate",
+        topAssets: "Brookfield Property Partners",
+        sectorWeight: 1.633199154968784
+      },
+      {
+        name: "Real Estate Services",
+        y: 0.4193644067796609,
+        color: "#8c564b",
+        sector: "Real Estate",
+        topAssets: "CBRE Group (A)",
+        sectorWeight: 1.633199154968784
+      },
+      {
+        name: "REITs - Diversified",
+        y: 0.6739495114006514,
+        color: "#8c564b",
+        sector: "Real Estate",
+        topAssets: "Vornado Realty Trust, W.P. Carey",
+        sectorWeight: 1.633199154968784
+      },
+      {
+        name: "REITs - Retail",
+        y: 0.3769035532994922,
+        color: "#8c564b",
+        sector: "Real Estate",
+        topAssets: "Realty Income, Simon Property Group",
+        sectorWeight: 1.633199154968784
+      },
+      {
+        name: "Communication Equipment",
+        y: 0.180,
+        color: "turquoise",
+        sector: "Technology",
+        topAssets: "Cisco Systems",
+        sectorWeight: 12.67939120316918
+      },
+      {
+        name: "Computer Hardware",
+        y: 0.396,
+        color: "turquoise",
+        sector: "Technology",
+        topAssets: "Apple",
+        sectorWeight: 12.67939120316918
+      },
+      {
+        name: "Consumer Electronics",
+        y: 0.09056603773584905,
+        color: "turquoise",
+        sector: "Technology",
+        topAssets: "Sony",
+        sectorWeight: 12.67939120316918
+      },
+      {
+        name: "Electronic Components",
+        y: 0.4161490683229814,
+        color: "turquoise",
+        sector: "Technology",
+        topAssets: "Texas Instruments, Taiwan Semiconductor Manufacturing",
+        sectorWeight: 12.67939120316918
+      },
+      {
+        name: "Information Technology Services",
+        y: 3.858,
+        color: "turquoise",
+        sector: "Technology",
+        topAssets: "Microsoft, Accenture, International Business Machines",
+        sectorWeight: 12.67939120316918
+      },
+      {
+        name: "Scientific & Technical Instruments",
+        y: 0.3566037735849057,
+        color: "turquoise",
+        sector: "Technology",
+        topAssets: "Thermo Fisher Scientific",
+        sectorWeight: 12.67939120316918
+      },
+      {
+        name: "Semiconductor Equipment & Materials",
+        y: 1.1509433962264151,
+        color: "turquoise",
+        sector: "Technology",
+        topAssets: "ASML Holding, Applied Materials",
+        sectorWeight: 12.67939120316918
+      },
+      {
+        name: "Semiconductors",
+        y: 3.217924528301887,
+        color: "turquoise",
+        sector: "Technology",
+        topAssets: "NVIDIA, Intel, Advanced Micro Devices",
+        sectorWeight: 12.67939120316918
+      },
+      {
+        name: "Software - Application",
+        y: 1.245283018867925,
+        color: "turquoise",
+        sector: "Technology",
+        topAssets: "Salesforce, Adobe, Oracle",
+        sectorWeight: 12.67939120316918
+      },
+      {
+        name: "Software - Infrastructure",
+        y: 1.7495283018867924,
+        color: "turquoise",
+        sector: "Technology",
+        topAssets: "Microsoft, VMware (A), Red Hat",
+        sectorWeight: 12.67939120316918
+      },
+      {
+        name: "Utilities - Diversified",
+        y: 1.644,
+        color: "#ff7f0e",
+        sector: "Utilities",
+        topAssets: "NextEra Energy, Dominion Energy, Duke Energy",
+        sectorWeight: 3.1505391821697
+      },
+      {
+        name: "Utilities - Independent Power Producers",
+        y: 1.0136986301369864,
+        color: "#ff7f0e",
+        sector: "Utilities",
+        topAssets: "AES, NRG Energy",
+        sectorWeight: 3.1505391821697
+      },
+      {
+        name: "Utilities - Regulated Electric",
+        y: 0.493,
+        color: "#ff7f0e",
+        sector: "Utilities",
+        topAssets: "American Electric Power, Exelon",
+        sectorWeight: 3.1505391821697
       }
-    }
+    ];
 
-    setData({ portfolio: portfolioData, holdings: holdingsData });
+    setData({ sectors: sectorsData, industries: industriesData });
     setLoading(false);
   }, []);
 
   const options = {
     chart: {
-      type: 'pie',
+      reflow: true,
+      type: "pie",
+      backgroundColor: "transparent",
       width: 500,
-      height: 500,
-      backgroundColor: 'transparent'
+      height: 500
     },
     title: {
-      text: 'Portfolio Allocation',
-      style: {
-        fontSize: '18px',
-        fontWeight: 'bold'
+      text: null
+    },
+    yAxis: {
+      title: {
+        text: null
       }
-    },
-    subtitle: {
-      text: 'Inner ring shows categories, outer ring shows individual holdings'
-    },
-    plotOptions: {
-      pie: {
-        shadow: false,
-        center: ['50%', '50%']
-      }
-    },
-    tooltip: {
-      valueSuffix: '%'
-    },
-    series: [{
-      name: 'Categories',
-      data: data?.portfolio || [],
-      size: '50%',
-      dataLabels: {
-        color: '#ffffff',
-        distance: '-40%',
-        style: {
-          fontWeight: 'bold'
-        }
-      }
-    }, {
-      name: 'Holdings',
-      data: data?.holdings || [],
-      size: '85%',
-      innerSize: '60%',
-      dataLabels: {
-        format: '<b>{point.name}:</b> <span style="opacity: 0.5">{y}%</span>',
-        filter: {
-          property: 'y',
-          operator: '>',
-          value: 0.5
-        },
-        style: {
-          fontWeight: 'normal',
-          fontSize: '11px'
-        }
-      },
-      id: 'holdings'
-    }],
-    responsive: {
-      rules: [{
-        condition: {
-          maxWidth: 400
-        },
-        chartOptions: {
-          series: [{
-          }, {
-            id: 'holdings',
-            dataLabels: {
-              distance: 10,
-              filter: {
-                property: 'y',
-                operator: '>',
-                value: 1
-              }
-            }
-          }]
-        }
-      }]
     },
     credits: {
       enabled: false
+    },
+    exporting: {
+      enabled: false
+    },
+    boost: {
+      enabled: false
+    },
+    plotOptions: {
+      series: {
+        label: {
+          enabled: false
+        },
+        turboThreshold: 0
+      },
+      treemap: {
+        layoutAlgorithm: "squarified"
+      },
+      pie: {
+        showInLegend: false
+      }
+    },
+    series: [
+      {
+        data: data?.sectors || [],
+        visible: false,
+        size: "100%",
+        innerSize: "99.999999%",
+        name: "Sectors",
+        dataLabels: {
+          enabled: true,
+          distance: 5
+        }
+      },
+      {
+        data: data?.industries || [],
+        size: "99%",
+        innerSize: "80%",
+        name: "Industries",
+        dataLabels: {
+          enabled: false
+        }
+      }
+    ],
+    tooltip: {
+      useHTML: true,
+      pointFormat: "<b>{point.name}</b><br/><b>Sector:</b> {point.sector}<br/><b>Industry Weight:</b> {point.y:.2f}%<br/><b>Sector Weight:</b> {point.sectorWeight:.2f}%<br/><b>Top 3:</b> {point.topAssets}"
     }
   };
 
