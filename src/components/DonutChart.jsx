@@ -10,48 +10,16 @@ const DonutChart = () => {
     // Sectors data - first series (hidden inner ring)
     const sectorsData = [
       {
-        name: "Basic Materials",
-        y: 4.731030727468092,
-        color: "pink",
-        dataLabels: {
-          enabled: true
-        }
-      },
-      {
-        name: "Communication Services",
-        y: 6.797067498675913,
-        color: "#d62728",
-        dataLabels: {
-          enabled: true
-        }
-      },
-      {
-        name: "Consumer Cyclical",
-        y: 8.443886877037615,
-        color: "darkgreen",
-        dataLabels: {
-          enabled: true
-        }
-      },
-      {
-        name: "Consumer Defensive",
-        y: 11.83868329086453,
-        color: "#9467bd",
-        dataLabels: {
-          enabled: true
-        }
-      },
-      {
-        name: "Energy",
-        y: 0.8978412546779047,
-        color: "yellow",
+        name: "Industrials",
+        y: 19.5,
+        color: "purple",
         dataLabels: {
           enabled: true
         }
       },
       {
         name: "Financial Services",
-        y: 16.73486888816078,
+        y: 16.7,
         color: "#2ca02c",
         dataLabels: {
           enabled: true
@@ -59,48 +27,80 @@ const DonutChart = () => {
       },
       {
         name: "Healthcare",
-        y: 13.40831891217321,
+        y: 13.4,
         color: "#1f77b4",
         dataLabels: {
           enabled: true
         }
       },
       {
-        name: "Industrials",
-        y: 19.51451822833219,
-        color: "purple",
-        dataLabels: {
-          enabled: true
-        }
-      },
-      {
-        name: "Other",
-        y: 0.17065478230211,
-        color: "lightgrey",
-        dataLabels: {
-          enabled: true
-        }
-      },
-      {
-        name: "Real Estate",
-        y: 1.633199154968784,
-        color: "#8c564b",
-        dataLabels: {
-          enabled: true
-        }
-      },
-      {
         name: "Technology",
-        y: 12.67939120316918,
+        y: 12.7,
         color: "turquoise",
         dataLabels: {
           enabled: true
         }
       },
       {
+        name: "Consumer Defensive",
+        y: 11.8,
+        color: "#9467bd",
+        dataLabels: {
+          enabled: true
+        }
+      },
+      {
+        name: "Consumer Cyclical",
+        y: 8.4,
+        color: "darkgreen",
+        dataLabels: {
+          enabled: true
+        }
+      },
+      {
+        name: "Communication Services",
+        y: 6.8,
+        color: "#d62728",
+        dataLabels: {
+          enabled: true
+        }
+      },
+      {
+        name: "Basic Materials",
+        y: 4.7,
+        color: "pink",
+        dataLabels: {
+          enabled: true
+        }
+      },
+      {
         name: "Utilities",
-        y: 3.1505391821697,
+        y: 3.2,
         color: "#ff7f0e",
+        dataLabels: {
+          enabled: true
+        }
+      },
+      {
+        name: "Real Estate",
+        y: 1.6,
+        color: "#8c564b",
+        dataLabels: {
+          enabled: true
+        }
+      },
+      {
+        name: "Energy",
+        y: 0.9,
+        color: "yellow",
+        dataLabels: {
+          enabled: true
+        }
+      },
+      {
+        name: "Other",
+        y: 0.2,
+        color: "lightgrey",
         dataLabels: {
           enabled: true
         }
@@ -115,7 +115,7 @@ const DonutChart = () => {
         color: "pink",
         sector: "Basic Materials",
         topAssets: "BASF",
-        sectorWeight: 4.731030727468092
+        sectorWeight: 4.7
       },
       {
         name: "Chemicals - Specialty",
@@ -123,7 +123,7 @@ const DonutChart = () => {
         color: "pink",
         sector: "Basic Materials",
         topAssets: "Symrise, Covestro, Air Liquide",
-        sectorWeight: 4.731030727468092
+        sectorWeight: 4.7
       },
       {
         name: "Construction Materials",
@@ -131,7 +131,7 @@ const DonutChart = () => {
         color: "pink",
         sector: "Basic Materials",
         topAssets: "Heidelberg Materials, Buzzi Unicem",
-        sectorWeight: 4.731030727468092
+        sectorWeight: 4.7
       },
       {
         name: "Copper",
@@ -139,7 +139,7 @@ const DonutChart = () => {
         color: "pink",
         sector: "Basic Materials",
         topAssets: "Aurubis",
-        sectorWeight: 4.731030727468092
+        sectorWeight: 4.7
       },
       {
         name: "Industrial Materials",
@@ -147,7 +147,7 @@ const DonutChart = () => {
         color: "pink",
         sector: "Basic Materials",
         topAssets: "BOLIDEN AB, Rio Tinto",
-        sectorWeight: 4.731030727468092
+        sectorWeight: 4.7
       },
       {
         name: "Paper, Lumber & Forest Products",
@@ -155,7 +155,7 @@ const DonutChart = () => {
         color: "pink",
         sector: "Basic Materials",
         topAssets: "UPM Kymmene",
-        sectorWeight: 4.731030727468092
+        sectorWeight: 4.7
       },
       {
         name: "Advertising Agencies",
@@ -983,11 +983,30 @@ const DonutChart = () => {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px' }}>
+    <div style={{ display: 'flex', alignItems: 'center', padding: '20px', gap: '40px' }}>
       <HighchartsReact
         highcharts={Highcharts}
         options={options}
       />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '250px' }}>
+        {data?.sectors.map((sector, index) => (
+          <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
+            <div 
+              style={{ 
+                width: '12px', 
+                height: '12px', 
+                borderRadius: '50%', 
+                backgroundColor: sector.color,
+                flexShrink: 0
+              }}
+            ></div>
+            <span style={{ flex: 1 }}>{sector.name}</span>
+            <span style={{ fontWeight: 'bold', minWidth: '40px', textAlign: 'right' }}>
+              {sector.y.toFixed(1)}%
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
