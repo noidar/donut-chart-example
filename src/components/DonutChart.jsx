@@ -970,17 +970,17 @@ const DonutChart = () => {
     ],
     tooltip: {
       useHTML: true,
-      backgroundColor: '#ffffff',
-      borderColor: '#e5e7eb',
-      borderRadius: 8,
+      backgroundColor: '#333',
+      borderColor: '#374151',
+      borderRadius: 6,
       borderWidth: 1,
       shadow: true,
       style: {
-        color: '#374151',
+        color: '#ffffff',
         fontSize: '12px',
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
       },
-      pointFormat: '<div style="display: flex; align-items: center; gap: 8px; padding: 8px; color: #374151;"><div style="width: 8px; height: 8px; border-radius: 50%; background-color: {point.color}; flex-shrink: 0;"></div><div><b style="color: #111827;">{point.name}</b><br/><span style="color: #6b7280;"><b>Sector:</b></span> <span style="color: #374151;">{point.sector}</span><br/><span style="color: #6b7280;"><b>Industry Weight:</b></span> <span style="color: #374151;">{point.y:.2f}%</span><br/><span style="color: #6b7280;"><b>Sector Weight:</b></span> <span style="color: #374151;">{point.sectorWeight:.2f}%</span><br/><span style="color: #6b7280;"><b>Top 3:</b></span> <span style="color: #374151;">{point.topAssets}</span></div></div>'
+      pointFormat: '<div style="padding: 10px; color: #ffffff;"><div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;"><div style="width: 8px; height: 8px; border-radius: 50%; background-color: {point.color}; flex-shrink: 0;"></div><span style="color: #9ca3af;"><b>Sector Weight:</b> {point.sectorWeight:.2f}%</span></div><hr style="margin: 8px 0; border: none; border-top: 1px solid #6b7280; opacity: 0.5;"/><b style="color: #ffffff;">{point.name}</b><br/><span style="color: #ffffff;">{point.y:.2f}%</span><br/><span style="color: #d1d5db;">{point.sector}</span><br/><span style="color: #9ca3af;"><b>Top 3:</b> {point.topAssets}</span></div>'
     }
   };
 
